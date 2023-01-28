@@ -1,0 +1,64 @@
+.label {
+  width: 96px;
+  height: 22px;
+  border-radius: 4px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 130%;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label_New {
+  background: #0bcc23;
+}
+
+.label_Discount {
+  background: #ff5c5c;
+}
+
+.label_Xit {
+  background: #ff3a3a;
+}
+
+.label_Simple {
+  background: #f2f2f2;
+  color: black;
+}
+
+.label_Recommended {
+  background: #22b0f8;
+}
+
+.label_Paid {
+  background: #0bcc23;
+}
+
+.label_Reject {
+  background: #ff3a3a;
+}
+
+.label_Pending {
+  background: #ffe600;
+  color: black;
+}
+
+.label_process{
+    background: #22B0F8;
+}
+.label_In{
+  background: #22B0F8;
+}
+.label_Canceled{
+background: #22B0F8;
+}
+
+.label_Bestseller{
+  background: #FF3A3A;
+}
+.label_Ordinary{
+  color: black;
+  background: #F2F2F2;
+}
