@@ -542,9 +542,11 @@ export default function AddProduct() {
                 </div>
               </div>
               <div className="flex items-center justify-center space-x-5 mt-6">
-                <MButton BType="reject" type="reset">
-                  Отменить
-                </MButton>
+                <Link to="/">
+                  <MButton BType="reject" type="reset">
+                    Отменить
+                  </MButton>
+                </Link>
                 <MButton BType="next" type="submit">
                   Submit
                 </MButton>
