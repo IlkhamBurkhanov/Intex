@@ -140,7 +140,7 @@ const Products = () => {
           id: item.id,
         },
         {
-          title: item.about_en,
+          title: item.name_en,
           image: item.image[0],
           style: "w-[300px] flex pl-3 items-center",
         },
