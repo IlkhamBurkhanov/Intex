@@ -75,7 +75,10 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <Link to={"/addCategory"} className="add bg-filterBg">
+                <Link
+                  to={"/addCategory"}
+                  className="add bg-filterBg text-center"
+                >
                   {languages[lang].main.add}
                 </Link>
               </div>

@@ -7,38 +7,17 @@ import HomeImg from "../../Assets/Images/HeaderImgs/HomeImg.svg";
 import THead from "../../components/THead/THead";
 import TBody from "../../components/TBody/TBody";
 import Trash from "../../Assets/Images/ProductsImgs/trash.svg";
+import { useSelector } from "react-redux";
 
 const env = process.env.REACT_APP_ALL_API;
-
-const data = [
-  {
-    title: "ID",
-    image: true,
-    style: "w-20",
-  },
-  {
-    title: "Имя",
-    image: true,
-    style: "w-[393px]",
-  },
-
-  {
-    title: "Номер телефона",
-    image: true,
-    style: "w-[249px]",
-  },
-  {
-    title: "Дата рождение",
-    image: false,
-    style: "w-[258px]",
-  },
-];
 
 export default function Home() {
   const [products, setProducts] = useState([]);
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
   const [totalPage, setTotalpage] = useState(0);
+  const languages = useSelector((state) => state.data.localization);
+  const lang = useSelector((state) => state.data.lang);
   // const [loader, setLoader] = useState([]);
 
   const token = JSON.parse(window.localStorage.getItem("token"));
@@ -87,6 +66,29 @@ export default function Home() {
       ],
     };
   });
+  const data = [
+    {
+      title: languages[lang].main.id ? languages[lang].main.id : "ID",
+      image: true,
+      style: "w-20",
+    },
+    {
+      title: languages[lang].main.nameUser,
+      image: true,
+      style: "w-[393px]",
+    },
+
+    {
+      title: languages[lang].main.phone,
+      image: true,
+      style: "w-[249px]",
+    },
+    {
+      title: languages[lang].main.birthday,
+      image: false,
+      style: "w-[258px]",
+    },
+  ];
 
   return (
     <>
@@ -97,35 +99,35 @@ export default function Home() {
         <span className="ml-2.5 text-navSubColor ">/</span>
         <Link to="/callBack">
           <h2 className="font-normal text-navSubColor text-xs ml-2.5">
-            Обратный связ
+            {languages[lang].sitebar.recall}
           </h2>
         </Link>
       </div>
       <div className="pt-6 pb-8 px-homeContentPadding overflow-y-scroll h-[100vh]">
         <div>
           <h2 className="text-navBarColor font-bold leading-8 text-2xl mb-4">
-            Обратный связ
+            {languages[lang].sitebar.recall}
           </h2>
           <div className="bg-white py-3 px-4 rounded-xl flex items-center justify-between">
             <div className="flex items-center">
               <MButton BType="filter bg-filterBg" type="button">
-                Фильтр
+                {languages[lang].main.filter}
               </MButton>
               <input
                 id="homeSearch"
                 className="py-3 ml-4 w-homeInpWidth outline-none pl-9 pr-3 rounded-xl bg-headerInpBg"
                 type="text"
-                placeholder="Поиск товара"
+                placeholder={languages[lang].main.searchProduct}
                 autoComplete="off"
               />
             </div>
             <div className="flex items-center">
               <strong className="font-semibold text-base text-homeColor mr-2.5">
-                Сортировка
+                {languages[lang].main.sort}
               </strong>
               <div className="w-homeSortWidth cursor-pointer mr-6 flex items-center justify-between bg-headerInpBg p-3 rounded-xl">
                 <span className="font-medium text-sm text-homeSortWrap">
-                  По А-Я
+                  {languages[lang].main.as}
                 </span>
                 <svg
                   width="24"
@@ -173,10 +175,10 @@ export default function Home() {
                 <option value="10">10</option>
               </select>
               <span className="m-0 mr-3 text-paginationColor text-sm">
-                Элементы на каждой странице
+                {languages[lang].main.elementsPage}
               </span>
               <span className="text-sm text-paginationButtonColor">
-                1-5 из {totalPage} предметов
+                1-5 из {languages[lang].main.itemsNumb} {totalPage}
               </span>
             </div>
             <div className="flex items-center">
@@ -188,18 +190,24 @@ export default function Home() {
                 maxLength={1}
               />
               <span className="mr-3.5 text-sm text-paginationButtonColor">
-                из {totalPage / limit} страниц
+                из {Math.floor(totalPage / limit)} {languages[lang].main.pages}
               </span>
               <span className="flex">
                 <button
-                  onClick={() => (page ? setPage(page - 1) : null)}
                   className="mr-4 text-paginationButtonColor"
+                  onClick={() => {
+                    page === 0 ? setPage(0) : setPage(page - 1);
+                  }}
                 >
                   &#60;
                 </button>
                 <button
-                  onClick={() => setPage(page + 1)}
                   className=" text-paginationButtonColor"
+                  onClick={() => {
+                    page === Math.floor(totalPage / limit)
+                      ? setPage(Math.floor(totalPage / limit))
+                      : setPage(page + 1);
+                  }}
                 >
                   &#62;
                 </button>

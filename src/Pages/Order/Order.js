@@ -5,9 +5,12 @@ import MButton from "../../BaseComponents/MButton/MButton";
 import ProductOrder from "./ProductOrder";
 import { useSelector, useDispatch } from "react-redux";
 import { searchProduction } from "../../redux/siteDataReducer";
+
 // import moment from 'moment';
 export default function Home() {
   const search = useSelector((state) => state.data.search);
+  const languages = useSelector((state) => state.data.localization);
+  const lang = useSelector((state) => state.data.lang);
 
   const dispatch = useDispatch();
 
@@ -20,25 +23,25 @@ export default function Home() {
         <span className="ml-2.5 text-navSubColor ">/</span>
         <Link to="/order">
           <h2 className="font-normal text-navSubColor text-xs ml-2.5">
-            Заказы
+            {languages[lang].sitebar.order}
           </h2>
         </Link>
       </div>
       <div className="pt-6 pb-8 px-homeContentPadding overflow-scroll h-[100vh] ">
         <div className="mb-4">
           <h2 className="text-navBarColor font-bold leading-8 text-2xl mb-4">
-            Заказы
+            {languages[lang].sitebar.order}
           </h2>
           <div className="bg-white py-3 px-4 rounded-xl flex items-center justify-between">
             <div className="flex items-center">
               <MButton BType="filter bg-filterBg" type="button">
-                Фильтр
+                {languages[lang].main.filter}
               </MButton>
               <input
                 id="homeSearch"
                 className="py-3 ml-4 w-homeInpWidth outline-none pl-9 pr-3 rounded-xl bg-headerInpBg"
                 type="text"
-                placeholder="Поиск товара"
+                placeholder={languages[lang].main.searchOrder}
                 autoComplete="off"
                 value={search}
                 onChange={(e) => {
@@ -48,11 +51,11 @@ export default function Home() {
             </div>
             <div className="flex items-center">
               <strong className="font-semibold text-base text-homeColor mr-2.5">
-                Сортировка
+                {languages[lang].main.sort}
               </strong>
               <div className="w-homeSortWidth cursor-pointer mr-6 flex items-center justify-between bg-headerInpBg p-3 rounded-xl">
                 <span className="font-medium text-sm text-homeSortWrap">
-                  По А-Я
+                  {languages[lang].main.as}
                 </span>
                 <svg
                   width="24"

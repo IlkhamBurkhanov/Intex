@@ -21,8 +21,9 @@ export default function ProductOrder() {
   const env = process.env.REACT_APP_ALL_API;
 
   const token = JSON.parse(window.localStorage.getItem("token"));
-
+  const languages = useSelector((state) => state.data.localization);
   const lang = useSelector((state) => state.data.lang);
+
   const search = useSelector((state) => state.data.search);
 
   function searchProduct(inputValue, data) {
@@ -85,46 +86,46 @@ export default function ProductOrder() {
       });
   };
   // ("with id", deleteAll);
-
+  console.log(IdArray);
   // (deleteAll.length);
   const datas = [
     {
-      title: "№ Заказа",
+      title: languages[lang].main.numOrder,
       image: true,
       style: "w-[120px] justify-center",
     },
     {
-      title: "Имя клиента",
+      title: languages[lang].main.nameUser,
       image: true,
       style: "w-[132px] ",
     },
     {
-      title: "Tелефон",
+      title: languages[lang].main.phone,
       image: false,
       style: "w-[162px]",
     },
     {
-      title: "Адрес",
+      title: languages[lang].main.address,
       image: false,
       style: "w-[200px]",
     },
     {
-      title: "Товары",
+      title: languages[lang].main.product,
       image: true,
       style: "w-[110px]",
     },
     {
-      title: "Обшая цена",
+      title: languages[lang].main.ovarallPrice,
       image: true,
       style: "w-[132px]",
     },
     {
-      title: "Время заказа",
+      title: languages[lang].main.timeOrder,
       image: false,
       style: "w-[114px]",
     },
     {
-      title: "Статус",
+      title: languages[lang].main.status,
       image: false,
       style: "w-[118px]",
     },
@@ -186,7 +187,7 @@ export default function ProductOrder() {
             onChange={() => setIsChecked(!isChecked)}
           />
           <span className="text-[#b9b9b9] mr-3">
-            {isChecked ? data.result.length : deleteAll.length}, Выбрано
+            {isChecked ? data.length : 0}, Выбрано
           </span>
           <img
             className="cursor-pointer"
@@ -198,7 +199,11 @@ export default function ProductOrder() {
         <div className="table-scroll overflow-x-scroll pb-2.5 bg-white">
           <table className="w-full pt-12">
             <THead data={datas} />
-            <TBody vitalData={vitalData} linkUp="/order/update" />
+            <TBody
+              vitalData={vitalData}
+              linkUp="/order/update"
+              isChecked={isChecked}
+            />
           </table>
         </div>
         <div className="flex border-t mt-2.5 p-3 justify-between items-center pr-5">
@@ -211,10 +216,10 @@ export default function ProductOrder() {
               <option value="10">10</option>
             </select>
             <span className="m-0 mr-3 text-paginationColor text-sm">
-              Элементы на каждой странице
+              {languages[lang].main.elementsPage}
             </span>
             <span className="text-sm text-paginationButtonColor">
-              1-5 из {totalPage} предметов
+              1-5 из {languages[lang].main.itemsNumb} {totalPage}
             </span>
           </div>
           <div className="flex items-center">
@@ -226,18 +231,24 @@ export default function ProductOrder() {
               maxLength={1}
             />
             <span className="mr-3.5 text-sm text-paginationButtonColor">
-              из {totalPage / limit} страниц
+              из {Math.floor(totalPage / limit)} {languages[lang].main.pages}
             </span>
             <span className="flex">
               <button
-                onClick={() => (page ? setPage(page - 1) : null)}
                 className="mr-4 text-paginationButtonColor"
+                onClick={() => {
+                  page === 0 ? setPage(0) : setPage(page - 1);
+                }}
               >
                 &#60;
               </button>
               <button
-                onClick={() => setPage(page + 1)}
                 className=" text-paginationButtonColor"
+                onClick={() => {
+                  page === Math.floor(totalPage / limit)
+                    ? setPage(Math.floor(totalPage / limit))
+                    : setPage(page + 1);
+                }}
               >
                 &#62;
               </button>

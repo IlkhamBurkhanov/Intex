@@ -159,7 +159,7 @@ export default function SiteBar() {
           to={"/userpage"}
         >
           <UserImg />
-          <span className="ml-navBarIcon">Пользователи</span>
+          <span className="ml-navBarIcon">{languages[lang].sitebar.users}</span>
         </NavLink>
         <NavLink
           onClick={delteInnerlink}

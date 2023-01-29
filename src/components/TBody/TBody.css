@@ -1,5 +1,5 @@
 .label {
-  width: 96px;
+  width: 110px;
   height: 22px;
   border-radius: 4px;
   font-weight: 400;
@@ -30,6 +30,7 @@
 
 .label_Recommended {
   background: #22b0f8;
+  
 }
 
 .label_Paid {

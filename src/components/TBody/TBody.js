@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 
 const env = process.env.REACT_APP_ALL_API;
 
-export default function TBody({ vitalData, urlRoute, linkUp }) {
+export default function TBody({ vitalData, urlRoute, linkUp, isChecked }) {
   const [data, setData] = useState([]);
   const [userId, setUserId] = useState(0);
   const [orderNum, setOrderNum] = useState("");
@@ -42,7 +42,7 @@ export default function TBody({ vitalData, urlRoute, linkUp }) {
   const handleScroll = () => {
     console.log("scrolling");
   };
-
+  console.log(data);
   return (
     <tbody className="bg-white" onScroll={handleScroll}>
       <tr className="h-2.5 bg-[#E5E5E5]"></tr>
@@ -59,6 +59,7 @@ export default function TBody({ vitalData, urlRoute, linkUp }) {
                   className="w-[18px] h-[18px] cursor-pointer"
                   type="checkbox"
                   name={`input${i}`}
+                  checked={isChecked}
                 />
               </td>
               {el.data.map((a, i) => {
@@ -70,7 +71,7 @@ export default function TBody({ vitalData, urlRoute, linkUp }) {
                     {a.image ? (
                       <img
                         className="w-6 h-6 rounded-full mr-[6px]"
-                        src={a.image || "https://via.placeholder.com/42x38"}
+                        src={`https://intex-shop-production.up.railway.app/${a.image}`}
                         alt="basseyn"
                       />
                     ) : null}

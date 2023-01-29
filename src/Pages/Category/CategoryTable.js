@@ -101,22 +101,22 @@ const ProductsCategory = () => {
 
   const datas = [
     {
-      title: "ID",
+      title: languages[lang].main.id ? languages[lang].main.id : "ID",
       image: true,
       style: "w-20 justify-center",
     },
     {
-      title: "Категория продукта",
+      title: languages[lang].main.categoryProduct,
       image: true,
       style: "w-[227px] ",
     },
     {
-      title: "Кол-во под категория",
+      title: languages[lang].main.colvo,
       image: true,
       style: "w-[197px]",
     },
     {
-      title: "Под категории",
+      title: languages[lang].main.subCat,
       image: true,
       style: "w-[474px]",
     },

@@ -40,6 +40,7 @@ export default function AddProduct() {
   // newwwwwwwwwwwww
   const [imgUrl, setImgUrl] = useState([]);
   const [getImg, setGetImg] = useState([]);
+  const [image, setImage] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showModal1, setShowModal1] = useState(false);
   const [statusItem, setStatusItem] = useState(1);
@@ -69,7 +70,7 @@ export default function AddProduct() {
           about_uz: addProduct.name_uz,
           about_ru: addProduct.about_ru,
           about_en: addProduct.about_en,
-          image: ["string"],
+          image: image ? image : [""],
           category_id: categoryItem,
           country_id: 1,
           status_id: statusItem,
@@ -113,28 +114,10 @@ export default function AddProduct() {
     onSubmit,
     validationSchema,
   });
-  const findNewImg = (evt) => {
-    setGetImg([
-      ...getImg,
-      {
-        img: window.URL.createObjectURL(evt.target.files[0]),
-        id: getImg.length ? getImg[getImg.length - 1].id + 1 : 0,
-      },
-    ]);
-    if (evt.target && evt.target.files[0]) {
-      setImgUrl([
-        ...imgUrl,
-        {
-          id: imgUrl.length ? imgUrl[imgUrl.length - 1].id + 1 : 0,
-          url: evt.target.files[0],
-        },
-      ]);
-    }
-
-    imgUrl.map((item) => collectingImgs.push(item.url));
-    for (const item of collectingImgs) {
-      formdata.append("image", item);
-    }
+  useEffect(() => {
+    imgUrl.map((item) => {
+      formdata.append("image", item.url);
+    });
     axios
       .post(`${env}media`, formdata, {
         headers: {
@@ -143,13 +126,61 @@ export default function AddProduct() {
       })
       .then((res) => {
         if (res.status === 201) {
-          console.log(res);
+          console.log("aliw", res);
+          setImage(res?.data.image);
         }
       })
       .catch((err) => err);
+  }, [imgUrl]);
+
+  const findNewImg = (evt) => {
+    console.log("sss");
+    console.log(evt.target.files[0]);
+    setGetImg([
+      ...getImg,
+      {
+        img: window.URL.createObjectURL(evt.target.files[0]),
+        id: getImg.length ? getImg.length + 1 : 0,
+      },
+    ]);
+    if (evt.target && evt.target.files[0]) {
+      console.log(evt.target);
+      setImgUrl([
+        ...imgUrl,
+        {
+          id: imgUrl.length ? imgUrl.length + 1 : 0,
+          url: evt.target.files[0],
+        },
+      ]);
+    }
+    console.log(imgUrl);
+    console.log(getImg);
+    // imgUrl.map((item) => {
+    //   formdata.append("image", item.url);
+    // });
+    // imgUrl.map((item) => collectingImgs.push(item.url));
+    // console.log(collectingImgs);
+    // for (const item of collectingImgs) {
+    //   formdata.append("image", item);
+    //   console.log("formData", item);
+    // }
+    // axios
+    //   .post(`${env}media`, formdata, {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     if (res.status === 201) {
+    //       console.log("aliw", res);
+    //       setImage(res?.data.image);
+    //     }
+    //   })
+    //   .catch((err) => err);
+
+    console.log(11111, imgUrl);
   };
 
-  console.log(11111, imgUrl);
   const handleSubmitSelect = (evt) => {
     evt.preventDefault();
     setShowModal(false);

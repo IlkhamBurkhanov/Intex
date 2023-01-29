@@ -9,6 +9,7 @@ import EditImg from "../../Assets/Images/SettingsImg/edit.svg";
 import Close from "../../Assets/Images/SettingsImg/close.svg";
 import Flag from "../../Assets/Images/SettingsImg/flag.svg";
 import Add from "../../Assets/Images/SettingsImg/add.svg";
+import { useSelector } from "react-redux";
 
 const env = process.env.REACT_APP_ALL_API;
 
@@ -24,6 +25,8 @@ export default function Home() {
   const [links, setLinks] = useState([]);
   const [createLinkTitle, setCreateLinkTitle] = useState("");
   const [createLinkText, setCreateLinkText] = useState("");
+  const languages = useSelector((state) => state.data.localization);
+  const lang = useSelector((state) => state.data.lang);
 
   const token = JSON.parse(window.localStorage.getItem("token"));
 
@@ -246,17 +249,20 @@ export default function Home() {
         "
         >
           <h2 className="font-normal text-navSubColor text-xs ml-2.5">
-            Настройки сайта
+            {languages[lang].sitebar.settings}
           </h2>
         </Link>
       </div>
       <div className="px-7 pt-6 mb-40">
-        <h1 className="font-bold text-navBarColor text-2xl">Настройки сайта</h1>
+        <h1 className="font-bold text-navBarColor text-2xl">
+          {" "}
+          {languages[lang].sitebar.settings}
+        </h1>
         <div className="w-full mt-4 bg-white rounded-xl px-6 py-7">
           <div>
             <div className="flex justify-between items-center">
               <h2 className="text-lg text-navBarColor font-bold">
-                Контактная информация
+                {languages[lang].main.contactInfo}
               </h2>
               <button
                 onClick={() => setShowModal(true)}
@@ -270,7 +276,7 @@ export default function Home() {
               <div>
                 <div>
                   <h3 className="font-bold text-base text-supportColor mb-2">
-                    Адрес
+                    {languages[lang].main.address}
                   </h3>
                   <p className="text-sm text-navBarColor">
                     {loading ? loader : data.address_ru}
@@ -278,7 +284,7 @@ export default function Home() {
                 </div>
                 <div className="mt-6">
                   <h3 className="font-bold text-base text-supportColor mb-2">
-                    Номер телефона
+                    {languages[lang].main.phone}
                   </h3>
                   <p className="text-sm text-navBarColor">
                     {loading ? loader : data.phone}
@@ -296,7 +302,7 @@ export default function Home() {
                 </div>
                 <div className="mt-6">
                   <h3 className="font-bold text-base text-supportColor mb-2">
-                    График работы
+                    {languages[lang].main.schedule}
                   </h3>
                   <p className="text-sm text-navBarColor">
                     {loading ? loader : data.work_ru}
@@ -311,7 +317,7 @@ export default function Home() {
           <div>
             <div className="flex justify-between items-center">
               <h2 className="text-lg text-navBarColor font-bold">
-                Cоциальные сети
+                {languages[lang].main.socialMedia}
               </h2>
               <div className="flex items-center">
                 <button
