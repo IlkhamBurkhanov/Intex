@@ -16,6 +16,8 @@ import THead from "../../components/THead/THead";
 import TBody from "../../components/TBody/TBody";
 import Trash from "../../Assets/Images/ProductsImgs/trash.svg";
 import { useSelector } from "react-redux";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 
 const env = process.env.REACT_APP_ALL_API;
 const envImg = process.env.REACT_APP_IMAGE;
@@ -211,6 +213,69 @@ function UserPage() {
       });
   };
 
+  const initialValues = {
+    ru_price: "",
+    ru_salePrice: "",
+    phone: "",
+  };
+
+  const onSubmit = (values, { resetForm }) => {
+    // axios
+    //   .post(
+    //     "https://intex-shop-production.up.railway.app/api/products",
+    //     {
+    //       name_uz: addProduct.name_uz,
+    //       name_ru: addProduct.name_ru,
+    //       name_en: addProduct.name_en,
+    //       discount_price: values.ru_salePrice,
+    //       price: values.ru_price,
+    //       count: count,
+    //       about_uz: addProduct.name_uz,
+    //       about_ru: addProduct.about_ru,
+    //       about_en: addProduct.about_en,
+    //       image: image ? image : [""],
+    //       category_id: categoryItem,
+    //       country_id: 1,
+    //       status_id: statusItem,
+    //       manufacturer_id: 0,
+    //       attribute_id: [0],
+    //     },
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     }
+    //   )
+    //   .then(() => {
+    //     console.log("Submitted");
+    //     navigate("/");
+    //   })
+    //   .catch(() => {
+    //     console.log("Internal error");
+    //   });
+    // const informationResult = {
+    //   name_uz: values.uzName,
+    // };
+    // window.localStorage.setItem(
+    //   "information",
+    //   JSON.stringify(informationResult)
+    // );
+  };
+
+  const validationSchema = Yup.object({
+    ru_price: Yup.number().required("Required"),
+    ru_salePrice: Yup.number().required("Required"),
+    phone: Yup.string()
+      .required("Zakas Numbers is required, at least 3 characters")
+      .min(3, "Minimal 3 characters")
+      .max(7, "Maximum 20 characters"),
+  });
+  const formik = useFormik({
+    initialValues,
+    onSubmit,
+    validationSchema,
+  });
+
   return (
     <>
       <div className="bg-white flex items-center w-full pt-1.5 pb-1.5 px-8">
@@ -269,9 +334,12 @@ function UserPage() {
                   />
                 </svg>
               </div>
-              <Link to={"/addCategory"} className="add bg-filterBg text-center">
+              <button
+                onClick={() => setShowModal(true)}
+                className="add bg-filterBg text-center"
+              >
                 {languages[lang].main.add}
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -438,8 +506,20 @@ function UserPage() {
                   name="name"
                   placeholder="Введите ваше имя"
                   onChange={(e) => setName(e.target.value)}
-                  className="font-normal border border-[#E3E5E5] rounded-lg outline-none mt-2 h-11 px-4"
+                  className={
+                    formik.touched.ru_price && formik.errors.ru_price
+                      ? "  font-normal border rounded-lg outline-none mt-2 h-11 px-4 border-red-600"
+                      : " font-normal border border-[#E3E5E5] rounded-lg outline-none mt-2 h-11 px-4"
+                  }
+                  minLength="3"
+                  maxLength="25"
+                  {...formik.getFieldProps("ru_price")}
                 />
+                {formik.touched.ru_price && formik.errors.ru_price ? (
+                  <span className="text-red-600 text-xs absolute -bottom-1 sm:-bottom-5 left-2">
+                    {formik.errors.ru_price}
+                  </span>
+                ) : null}
               </label>
 
               <label className="flex flex-col font-medium text-base text-addProductColor">
@@ -449,9 +529,21 @@ function UserPage() {
                   type="text"
                   name="surname"
                   placeholder="Введите ваша фамилия"
-                  onChange={(e) => setSurName(e.target.value)}
-                  className="font-normal border border-[#E3E5E5] rounded-lg outline-none mt-2 h-11 px-4"
+                  // onChange={(e) => setSurName(e.target.value)}
+                  className={
+                    formik.touched.ru_price && formik.errors.ru_price
+                      ? "  font-normal border rounded-lg outline-none mt-2 h-11 px-4 border-red-600"
+                      : " font-normal border border-[#E3E5E5] rounded-lg outline-none mt-2 h-11 px-4"
+                  }
+                  minLength="3"
+                  maxLength="25"
+                  {...formik.getFieldProps("ru_prices")}
                 />
+                {formik.touched.ru_price && formik.errors.ru_price ? (
+                  <span className="text-red-600 text-xs absolute -bottom-1 sm:-bottom-5 left-2">
+                    {formik.errors.ru_price}
+                  </span>
+                ) : null}
               </label>
 
               <label className="relative text-base font-medium text-addProductColor">
@@ -467,6 +559,7 @@ function UserPage() {
                   <p className="ml-1 text-base text-[#0E0F0F]">+998</p>
                   <input
                     required
+                    title="Number length mustbe 9"
                     type="number"
                     placeholder="901234567"
                     onChange={(e) => setPhoneNumber(e.target.value)}

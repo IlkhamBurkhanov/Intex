@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 import React, { useEffect, useState } from "react";
 import { Modal } from "../../components/Modal/Modal";
+import { TurnOfon } from "./TurnOfon";
+import { Cheked } from "./Cheked";
 // Images
 import HomeImg from "../../Assets/Images/HeaderImgs/HomeImg.svg";
 import EditImg from "../../Assets/Images/SettingsImg/edit.svg";
@@ -19,6 +21,7 @@ export default function Home() {
   const [showModal2, setShowModal2] = useState(false);
   const [subLoading, setSubLoading] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [langu, setLangu] = useState([]);
   // --- Datas
   const [data, setData] = useState({});
   const [address, setAddress] = useState({});
@@ -27,6 +30,15 @@ export default function Home() {
   const [createLinkText, setCreateLinkText] = useState("");
   const languages = useSelector((state) => state.data.localization);
   const lang = useSelector((state) => state.data.lang);
+
+  // newww
+  const [checked, setChecked] = useState(true);
+  const [checked2, setChecked2] = useState(false);
+  const [checked3, setChecked3] = useState(false);
+
+  const [turn, setTurn] = useState(!data?.lang_ru);
+  const [turn2, setTurn2] = useState(!data?.lang_uz);
+  const [turn3, setTurn3] = useState(!data?.lang_en);
 
   const token = JSON.parse(window.localStorage.getItem("token"));
 
@@ -43,7 +55,7 @@ export default function Home() {
       })
       .catch((err) => console.error(err));
   }, [token]);
-
+  console.log(data);
   // --- Cоциальные сети get
   useEffect(() => {
     axios
@@ -72,6 +84,9 @@ export default function Home() {
           work_uz: address?.work_en,
           work_ru: address?.work_ru,
           work_en: address?.work_en,
+          lang_uz: turn,
+          lang_ru: turn2,
+          lang_en: turn3,
         },
         {
           headers: {
@@ -84,6 +99,9 @@ export default function Home() {
           axios.get(`${env}sites`).then((res) => {
             setData(res?.data[0]);
             setAddress(res?.data[0]);
+            setTurn(res?.data[0].lang_ru);
+            setTurn2(res?.data[0].lang_uz);
+            setTurn3(res?.data[0].lang_en);
           });
           toast.success("Успешно отправлено!");
         }
@@ -236,6 +254,52 @@ export default function Home() {
     </svg>
   );
 
+  //intex-shop-production.up.railway.app/api/sites/siteLangUpdate
+
+  const handleChanges = () => {
+    if (turn2 || turn3) {
+      setTurn(checked ? turn : !turn);
+      console.log("Cliked");
+    } else console.log("don't work");
+  };
+  const handleChanges2 = () => {
+    if (turn || turn3) {
+      setTurn2(checked2 ? turn2 : !turn2);
+      console.log("Cliked2");
+    } else console.log("don't work2");
+  };
+
+  const handleChanges3 = () => {
+    if (turn2 || turn) {
+      setTurn3(checked3 ? turn3 : !turn3);
+      console.log("Cliked3");
+    } else console.log("don't work3");
+  };
+
+  // DEFAULT LANGUAGENI UZGARTIRADIGAN FUNCTIONS
+  const handleCliked = (e) => {
+    if (turn) {
+      setChecked(true);
+      setChecked2(false);
+      setChecked3(false);
+    }
+  };
+
+  const handleCliked2 = (e) => {
+    if (turn2) {
+      setChecked(false);
+      setChecked2(true);
+      setChecked3(false);
+    }
+  };
+
+  const handleCliked3 = (e) => {
+    if (turn3) {
+      setChecked(false);
+      setChecked2(false);
+      setChecked3(true);
+    }
+  };
   return (
     <div className="overflow-y-scroll h-[100vh]">
       <Toaster position="top-center" reverseOrder={false} />
@@ -259,8 +323,83 @@ export default function Home() {
           {languages[lang].sitebar.settings}
         </h1>
         <div className="w-full mt-4 bg-white rounded-xl px-6 py-7">
+          {/* newww */}
+          <div className="flex border-b-2">
+            <div className="flex flex-col mr-[250px]">
+              <h2 className="text-[#464A4D] text-[18px] font-bold ">
+                Языки сайта
+              </h2>
+              <h2
+                className={
+                  turn
+                    ? "text-[#109EF4] font-bold mt-6 text-base  "
+                    : "text-[#B9B9B9] font-bold mt-6 text-base"
+                }
+              >
+                Pусский язык
+              </h2>
+              <h2
+                className={
+                  turn2
+                    ? "text-[#109EF4] font-bold  mt-5 text-base  "
+                    : "text-[#B9B9B9] font-bold text-base  mt-5 "
+                }
+              >
+                Узбекский язык
+              </h2>
+              <h2
+                className={
+                  turn3
+                    ? "text-[#109EF4] font-bold  mt-5 text-base"
+                    : "text-[#B9B9B9] font-bold  mt-5 text-base"
+                }
+              >
+                Aнглийский язык
+              </h2>
+            </div>
+
+            <div className="felx flex-col">
+              <h2 className="text-[#464A4D] pl-20 text-[18px] font-bold">
+                Язык по умолчанию
+              </h2>
+              <div className="mt-6 flex flex-col ">
+                <div className="flex ">
+                  <TurnOfon
+                    checked={turn}
+                    lang="lang_ru"
+                    onCliked={handleChanges}
+                  />
+                  <Cheked checked={checked} Clicked={handleCliked} />
+                </div>
+              </div>
+
+              <div className="mt-5 flex ">
+                <div
+                  className="flex
+            "
+                >
+                  <TurnOfon
+                    checked={turn2}
+                    lang="lang_uz"
+                    onCliked={handleChanges2}
+                  />
+                  <Cheked checked={checked2} Clicked={handleCliked2} />
+                </div>
+              </div>
+
+              <div className="mt-5 mb-6 flex ">
+                <TurnOfon
+                  checked={turn3}
+                  lang="lang_en"
+                  onCliked={handleChanges3}
+                />
+                <Cheked checked={checked3} Clicked={handleCliked3} />
+              </div>
+            </div>
+          </div>
+
           <div>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mt-6">
               <h2 className="text-lg text-navBarColor font-bold">
                 {languages[lang].main.contactInfo}
               </h2>
