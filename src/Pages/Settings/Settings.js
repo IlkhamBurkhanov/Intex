@@ -327,7 +327,7 @@ export default function Home() {
           <div className="flex border-b-2">
             <div className="flex flex-col mr-[250px]">
               <h2 className="text-[#464A4D] text-[18px] font-bold ">
-                Языки сайта
+                {languages[lang].main.langSite}
               </h2>
               <h2
                 className={
@@ -336,7 +336,7 @@ export default function Home() {
                     : "text-[#B9B9B9] font-bold mt-6 text-base"
                 }
               >
-                Pусский язык
+                {languages[lang].main.langRu}
               </h2>
               <h2
                 className={
@@ -345,7 +345,7 @@ export default function Home() {
                     : "text-[#B9B9B9] font-bold text-base  mt-5 "
                 }
               >
-                Узбекский язык
+                {languages[lang].main.langUz}
               </h2>
               <h2
                 className={
@@ -354,13 +354,13 @@ export default function Home() {
                     : "text-[#B9B9B9] font-bold  mt-5 text-base"
                 }
               >
-                Aнглийский язык
+                {languages[lang].main.langEn}
               </h2>
             </div>
 
             <div className="felx flex-col">
               <h2 className="text-[#464A4D] pl-20 text-[18px] font-bold">
-                Язык по умолчанию
+                {languages[lang].main.defaultLang}
               </h2>
               <div className="mt-6 flex flex-col ">
                 <div className="flex ">
