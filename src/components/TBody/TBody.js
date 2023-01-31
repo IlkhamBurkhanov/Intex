@@ -59,6 +59,7 @@ export default function TBody({ vitalData, urlRoute, linkUp, isChecked }) {
                   className="w-[18px] h-[18px] cursor-pointer"
                   type="checkbox"
                   name={`input${i}`}
+                  readOnly
                   checked={isChecked}
                 />
               </td>

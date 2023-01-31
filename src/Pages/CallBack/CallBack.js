@@ -17,6 +17,7 @@ export default function Home() {
   const [page, setPage] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
   const [totalPage, setTotalpage] = useState(0);
+  const [sortBtn, setSortBtn] = useState(false);
   const languages = useSelector((state) => state.data.localization);
   const lang = useSelector((state) => state.data.lang);
   // const [loader, setLoader] = useState([]);
@@ -42,6 +43,21 @@ export default function Home() {
       });
   }, [token]);
   console.log(products);
+  let sortData = sortBtn
+    ? products.sort((a, b) => {
+        const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      })
+    : null;
   // ------> Table Row Information
   const vitalData = products.map((item) => {
     return {
@@ -126,7 +142,10 @@ export default function Home() {
               <strong className="font-semibold text-base text-homeColor mr-2.5">
                 {languages[lang].main.sort}
               </strong>
-              <div className="w-homeSortWidth cursor-pointer mr-6 flex items-center justify-between bg-headerInpBg p-3 rounded-xl">
+              <div
+                onClick={() => setSortBtn(!sortBtn)}
+                className="w-homeSortWidth cursor-pointer mr-6 flex items-center justify-between bg-headerInpBg p-3 rounded-xl"
+              >
                 <span className="font-medium text-sm text-homeSortWrap">
                   {languages[lang].main.as}
                 </span>

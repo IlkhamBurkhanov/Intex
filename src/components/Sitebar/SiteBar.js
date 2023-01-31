@@ -12,6 +12,7 @@ import {
   SettingsIcon,
 } from "../../Assets/Images/NavbarImgs/NavBarIcons";
 import { useSelector } from "react-redux";
+
 export default function SiteBar() {
   const [innnerActice, setInnnerActice] = useState(false);
   const [categoryActive, setCategoryActive] = useState(false);

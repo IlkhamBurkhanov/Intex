@@ -7,6 +7,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import THead from "../../components/THead/THead";
 import TBody from "../../components/TBody/TBody";
+import MButton from "../../BaseComponents/MButton/MButton";
+import { useState } from "react";
 
 export default function ProductOrder() {
   const [data, setData] = React.useState([]);
@@ -14,6 +16,7 @@ export default function ProductOrder() {
   const [checkedCount, setCheckedCount] = React.useState(0);
   const [limit, setLimit] = React.useState(5);
   const [page, setPage] = React.useState(0);
+  const [sortBtn, setSortBtn] = useState(false);
   const [totalPage, setTotalpage] = React.useState(0);
   const [refresh, setRefresh] = React.useState(false);
   const [deleteAll, setDeleteAll] = React.useState([]);
@@ -59,7 +62,7 @@ export default function ProductOrder() {
 
         setTotalpage(res.data?.total_count.count);
       });
-  }, [limit, page, token, refresh]);
+  }, [limit, page, token, refresh, sortBtn]);
 
   const IdArray = data.result?.map((res) => res.id);
 
@@ -130,6 +133,23 @@ export default function ProductOrder() {
       style: "w-[118px]",
     },
   ];
+  let sortData = sortBtn
+    ? data.sort((a, b) => {
+        const nameA = a.first_name.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.first_name.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      })
+    : null;
+  console.log(data);
+  console.log(sortData);
   const vitalData = data.map((item) => {
     // console.log(item.created_at[0].slice(0, 10));
     return {
@@ -179,6 +199,57 @@ export default function ProductOrder() {
   console.log(data);
   return (
     <>
+      <div className="mb-4">
+        <h2 className="text-navBarColor font-bold leading-8 text-2xl mb-4">
+          {languages[lang].sitebar.order}
+        </h2>
+        <div className="bg-white py-3 px-4 rounded-xl flex items-center justify-between">
+          <div className="flex items-center">
+            <MButton BType="filter bg-filterBg" type="button">
+              {languages[lang].main.filter}
+            </MButton>
+            <input
+              id="homeSearch"
+              className="py-3 ml-4 w-homeInpWidth outline-none pl-9 pr-3 rounded-xl bg-headerInpBg"
+              type="text"
+              placeholder={languages[lang].main.searchOrder}
+              autoComplete="off"
+              value={search}
+              // onChange={(e) => {
+              //   dispatch(searchProduction(e.target.value));
+              // }}
+            />
+          </div>
+          <div className="flex items-center">
+            <strong className="font-semibold text-base text-homeColor mr-2.5">
+              {languages[lang].main.sort}
+            </strong>
+            <div
+              onClick={() => setSortBtn(!sortBtn)}
+              className="w-homeSortWidth cursor-pointer mr-6 flex items-center justify-between bg-headerInpBg p-3 rounded-xl"
+            >
+              <span className="font-medium text-sm text-homeSortWrap">
+                {languages[lang].main.as}
+              </span>
+              <svg
+                width="24"
+                height="22"
+                viewBox="0 0 24 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M9 11L12 14L15 11"
+                  stroke="#04009A"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="bg-white border-b rounded-xl mb-[100px] ">
         <div className="flex py-3 px-4 items-center">
           <input

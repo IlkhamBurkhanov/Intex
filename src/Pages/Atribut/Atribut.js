@@ -22,6 +22,7 @@ export default function Home() {
   const [deleteAll, setDeleteAll] = React.useState([]);
   const languages = useSelector((state) => state.data.localization);
   const lang = useSelector((state) => state.data.lang);
+  const [sortBtn, setSortBtn] = useState(false);
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
   const [totalPage, setTotalpage] = useState(0);
@@ -60,8 +61,23 @@ export default function Home() {
       })
       .catch((err) => console.error(err))
       .finally(() => {});
-  }, []);
+  }, [sortBtn]);
   console.log(atr);
+  let sortData = sortBtn
+    ? atr.sort((a, b) => {
+        const nameA = a.attribute_en.toUpperCase(); // ignore upper and lowercase
+        const nameB = b.attribute_en.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      })
+    : null;
   const vitalData = atr.map((item) => {
     return {
       mainId: item.id,
@@ -125,7 +141,10 @@ export default function Home() {
               <strong className="font-semibold text-base text-homeColor mr-2.5">
                 {languages[lang].main.sort}
               </strong>
-              <div className="w-homeSortWidth cursor-pointer mr-6 flex items-center justify-between bg-headerInpBg p-3 rounded-xl">
+              <div
+                onClick={() => setSortBtn(!sortBtn)}
+                className="w-homeSortWidth cursor-pointer mr-6 flex items-center justify-between bg-headerInpBg p-3 rounded-xl"
+              >
                 <span className="font-medium text-sm text-homeSortWrap">
                   {languages[lang].main.as}
                 </span>

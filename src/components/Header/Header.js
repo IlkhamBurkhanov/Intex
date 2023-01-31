@@ -7,6 +7,7 @@ import Notification from "../../Assets/Images/HeaderImgs/notification.svg";
 import avatar from "../../Assets/Images/HeaderImgs/avatar.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { changeLang } from "../../redux/siteDataReducer";
+import jwt from "jwt-decode";
 
 export default function Header() {
   const [down, setDown] = useState(false);
@@ -47,6 +48,10 @@ export default function Header() {
       setLangName("Ру");
     }
   };
+  // const token = JSON.parse(window.localStorage.getItem("token"));
+  // const aliw = jwt(token);
+  // console.log(aliw.image);
+
   return (
     <div className="bg-white w-full py-headerPaddingTopBottom px-headerPaddingX border-b-2 flex items-center justify-end">
       <div className="flex items-center space-x-8">
@@ -126,7 +131,18 @@ export default function Header() {
           />
         </div>
         <div className="flex cursor-pointer items-center justify-center w-10 h-10 rounded-headerNotif bg-defaultBtnBg">
-          <img src={avatar} alt="notification img" width="17" height="19" />
+          <img
+            // className="w-10 cursor-pointer object-cover h-10 rounded-headerNotif"
+            src={
+              avatar
+
+              // ? avatar
+              // : `https://intex-shop-production.up.railway.app/${aliw.image}`
+            }
+            alt="notification img"
+            width="17"
+            height="19"
+          />
         </div>
       </div>
     </div>
