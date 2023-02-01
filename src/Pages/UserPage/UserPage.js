@@ -38,6 +38,8 @@ function UserPage() {
   const lang = useSelector((state) => state.data.lang);
   const [isChecked, setIsChecked] = useState(false);
   const [sortBtn, setSortBtn] = useState(false);
+  const [menuCatOpen, setMenuCatOpen] = useState(false);
+  const [dateError, setDateError] = useState(false);
 
   // ------> Data
   const [products, setProducts] = useState([]);
@@ -103,7 +105,7 @@ function UserPage() {
         console.log(err);
       });
   }, [token, page, limit, showModal, sortBtn]);
-  console.log(products);
+
   let sortData = sortBtn
     ? products.sort((a, b) => {
         const nameA = a.first_name.toUpperCase(); // ignore upper and lowercase
@@ -231,68 +233,97 @@ function UserPage() {
   };
 
   const initialValues = {
-    ru_price: "",
-    ru_salePrice: "",
-    phone: "",
+    name: "",
+    surname: "",
+    phone_num: "",
   };
 
   const onSubmit = (values, { resetForm }) => {
-    // axios
-    //   .post(
-    //     "https://intex-shop-production.up.railway.app/api/products",
-    //     {
-    //       name_uz: addProduct.name_uz,
-    //       name_ru: addProduct.name_ru,
-    //       name_en: addProduct.name_en,
-    //       discount_price: values.ru_salePrice,
-    //       price: values.ru_price,
-    //       count: count,
-    //       about_uz: addProduct.name_uz,
-    //       about_ru: addProduct.about_ru,
-    //       about_en: addProduct.about_en,
-    //       image: image ? image : [""],
-    //       category_id: categoryItem,
-    //       country_id: 1,
-    //       status_id: statusItem,
-    //       manufacturer_id: 0,
-    //       attribute_id: [0],
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     }
-    //   )
-    //   .then(() => {
-    //     console.log("Submitted");
-    //     navigate("/");
-    //   })
-    //   .catch(() => {
-    //     console.log("Internal error");
-    //   });
-    // const informationResult = {
-    //   name_uz: values.uzName,
-    // };
-    // window.localStorage.setItem(
-    //   "information",
-    //   JSON.stringify(informationResult)
-    // );
+    console.log(values);
+    const userDeteals = {
+      first_name: values.name,
+      last_name: values.surname,
+      password: password === password1 ? password : "",
+      phone: "+998" + values.phone_num,
+      email: null,
+      birth_date: birthday,
+      user_image: image ? image[0] : "",
+      status: status,
+      gender: null,
+      role: role,
+      is_active: true,
+    };
+    if (!dateError) {
+      axios
+        .post(`${env}users`, userDeteals, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          if (res.status === 201) {
+            axios
+              .get(`${env}users`, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              .then((res) => {
+                setProducts(res.data.result);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+        })
+        .catch((err) => console.log(err))
+        .finally(() => {
+          setShowModal(false);
+          resetForm();
+        });
+    }
+    const informationResult = {
+      name_uz: values.uzName,
+    };
+    window.localStorage.setItem(
+      "information",
+      JSON.stringify(informationResult)
+    );
   };
 
   const validationSchema = Yup.object({
-    ru_price: Yup.number().required("Required"),
-    ru_salePrice: Yup.number().required("Required"),
-    phone: Yup.string()
-      .required("Zakas Numbers is required, at least 3 characters")
-      .min(3, "Minimal 3 characters")
-      .max(7, "Maximum 20 characters"),
+    name: Yup.string().required(" Name is required"),
+
+    surname: Yup.string().required("Surname is required"),
+
+    phone_num: Yup.string()
+      .required("Phone numbers is required")
+      .min(9, "Invalid Number")
+      .max(9, "Invalid Number"),
   });
   const formik = useFormik({
     initialValues,
     onSubmit,
     validationSchema,
   });
-  console.log(products);
+
+  const newdate = new Date();
+  const errorDate = newdate.getTime() - 441796964000;
+
+  const handleBirthday = (e) => {
+    console.log(newdate.getTime());
+
+    const aliw = new Date(e.target.value);
+
+    if (aliw.getTime() < errorDate) {
+      setBirthday(e.target.value);
+      console.log("success");
+      setDateError(false);
+    } else {
+      setDateError(true);
+      console.log("error date");
+    }
+  };
   return (
     <>
       <div className="bg-white flex items-center w-full pt-1.5 pb-1.5 px-8">
@@ -333,10 +364,11 @@ function UserPage() {
                   {languages[lang].main.sort}
                 </strong>
                 <div
-                  onClick={() => setSortBtn(!sortBtn)}
-                  className="w-homeSortWidth cursor-pointer mr-6 flex items-center justify-between bg-headerInpBg p-3 rounded-xl"
+                  // onClick={() => setSortBtn(!sortBtn)}
+                  onClick={() => setMenuCatOpen(!menuCatOpen)}
+                  className="w-homeSortWidth relative cursor-pointer mr-6 flex items-center justify-between  bg-headerInpBg p-3 rounded-xl"
                 >
-                  <span className="font-medium text-sm text-homeSortWrap">
+                  <span className="font-medium text-sm  text-homeSortWrap">
                     {languages[lang].main.as}
                   </span>
                   <svg
@@ -354,6 +386,26 @@ function UserPage() {
                       strokeLinejoin="round"
                     />
                   </svg>
+                  <ul
+                    className={` ${
+                      menuCatOpen
+                        ? "h-auto border-b-2  duration-200"
+                        : "h-0  duration-200 overflow-hidden"
+                    }  w-[150px]  absolute rounded-lg  mt-[90px]  bg-headerInpBg `}
+                  >
+                    <li>
+                      <span
+                        className="font-normal  text-homeSortWrap text-sm py-2 pl-3 inline-block duration-150 text-black-black_thin cursor-pointer"
+                        onClick={() => {
+                          setMenuCatOpen(false);
+                          // setClickMenu(false);
+                          setSortBtn(!sortBtn);
+                        }}
+                      >
+                        {sortBtn ? "By Default" : `${languages[lang].main.as}`}
+                      </span>
+                    </li>
+                  </ul>
                 </div>
                 <button
                   onClick={() => setShowModal(true)}
@@ -519,39 +571,72 @@ function UserPage() {
               </div>
             </div>
           </div>
-          <form onSubmit={userCreate} className="mt-8" autoComplete="off">
+          <form
+            onSubmit={(e) => {
+              formik.handleSubmit(e);
+              formik.values = initialValues;
+            }}
+            className="mt-8"
+            autoComplete="off"
+          >
             <div className="grid grid-cols-2 gap-5">
-              <label className="flex flex-col font-medium text-base text-addProductColor">
+              <label className="flex flex-col font-medium relative text-base text-addProductColor">
                 Имя
                 <input
                   required
                   type="text"
                   name="name"
                   placeholder="Введите ваше имя"
-                  onChange={(e) => setName(e.target.value)}
-                  className=" font-normal border border-[#E3E5E5] rounded-lg outline-none mt-2 h-11 px-4"
+                  // onChange={(e) => setName(e.target.value)}
+                  className={
+                    formik.touched.name && formik.errors.name
+                      ? " font-normal border border-red-600 rounded-lg outline-none mt-2 h-11 px-4"
+                      : " font-normal border border-[#E3E5E5] rounded-lg outline-none mt-2 h-11 px-4"
+                  }
                   minLength="3"
                   maxLength="25"
+                  {...formik.getFieldProps("name")}
                 />
+                {formik.touched.name && formik.errors.name ? (
+                  <span className="text-red-600 text-xs absolute -bottom-1 sm:-bottom-5 left-2">
+                    {formik.errors.name}
+                  </span>
+                ) : null}
               </label>
 
-              <label className="flex flex-col font-medium text-base text-addProductColor">
+              <label className="flex flex-col font-medium relative text-base text-addProductColor">
                 Фамилия
                 <input
                   required
                   type="text"
                   name="surname"
                   placeholder="Введите ваша фамилия"
-                  onChange={(e) => setSurName(e.target.value)}
-                  className=" font-normal border border-[#E3E5E5] rounded-lg outline-none mt-2 h-11 px-4"
+                  // onChange={(e) => setSurName(e.target.value)}
+                  className={
+                    formik.touched.surname && formik.errors.surname
+                      ? " font-normal border border-red-600 rounded-lg outline-none mt-2 h-11 px-4"
+                      : " font-normal border border-[#E3E5E5] rounded-lg outline-none mt-2 h-11 px-4"
+                  }
                   minLength="3"
                   maxLength="25"
+                  {...formik.getFieldProps("surname")}
                 />
+                {formik.touched.surname && formik.errors.surname ? (
+                  <span className="text-red-600 text-xs absolute -bottom-1 sm:-bottom-5 left-2">
+                    {formik.errors.surname}
+                  </span>
+                ) : null}
               </label>
 
               <label className="relative text-base font-medium text-addProductColor">
                 Номер телефона
-                <div className="w-full bg-white flex items-center h-11 rounded-lg border border-solid text-addProductColor px-4 mt-2">
+                <div
+                  className={
+                    formik.touched.phone_num && formik.errors.phone_num
+                      ? "w-full bg-white flex items-center h-11 rounded-lg border  border-red-600 border-solid text-addProductColor px-4 mt-2"
+                      : "w-full bg-white flex items-center h-11 rounded-lg border border-solid text-addProductColor px-4 mt-2"
+                  }
+                >
                   <img
                     src={Flag}
                     className="w-6 h-4"
@@ -562,13 +647,18 @@ function UserPage() {
                   <p className="ml-1 text-base text-[#0E0F0F]">+998</p>
                   <input
                     required
-                    title="Number length mustbe 9"
                     type="number"
                     placeholder="901234567"
-                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    onChange={(e) => console.log(e.target.value)}
                     className="font-normal outline-none w-full ml-1 h-full p-2"
+                    {...formik.getFieldProps("phone_num")}
                   />
                 </div>
+                {formik.touched.phone_num && formik.errors.phone_num ? (
+                  <span className="text-red-600 text-xs absolute -bottom-1 sm:-bottom-5 left-2">
+                    {formik.errors.phone_num}
+                  </span>
+                ) : null}
               </label>
 
               <label
@@ -581,9 +671,18 @@ function UserPage() {
                   id="date"
                   type="date"
                   placeholder="Select estimate time"
-                  onChange={(e) => setBirthday(e.target.value)}
-                  className={`date_bg date h-11 relative text-15 rounded-md pr-10 pl-3 mt-2 outline-none border text-black`}
+                  onChange={(e) => handleBirthday(e)}
+                  className={
+                    dateError
+                      ? "date_bg date  h-11 relative text-15 rounded-md pr-10 pl-3 mt-2 outline-none border  border-red-600 text-black"
+                      : `date_bg date  h-11 relative text-15 rounded-md pr-10 pl-3 mt-2 outline-none border   text-black`
+                  }
                 />
+                {dateError ? (
+                  <span className="text-red-600 text-xs absolute -bottom-1 sm:-bottom-5 left-2">
+                    You cannot register because you are under 14 years of age
+                  </span>
+                ) : null}
               </label>
               {/* ------ Select ------ */}
               <select

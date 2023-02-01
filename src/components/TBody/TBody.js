@@ -16,7 +16,7 @@ export default function TBody({ vitalData, urlRoute, linkUp, isChecked }) {
   const [data, setData] = useState([]);
   const [userId, setUserId] = useState(0);
   const [orderNum, setOrderNum] = useState("");
-  console.log(vitalData);
+
   const dispatch = useDispatch();
   useEffect(() => {
     setData(vitalData);
@@ -42,7 +42,7 @@ export default function TBody({ vitalData, urlRoute, linkUp, isChecked }) {
   const handleScroll = () => {
     console.log("scrolling");
   };
-  console.log(data);
+
   return (
     <tbody className="bg-white" onScroll={handleScroll}>
       <tr className="h-2.5 bg-[#E5E5E5]"></tr>

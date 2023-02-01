@@ -20,7 +20,7 @@ export default function ProductOrder() {
   const [totalPage, setTotalpage] = React.useState(0);
   const [refresh, setRefresh] = React.useState(false);
   const [deleteAll, setDeleteAll] = React.useState([]);
-
+  const [menuCatOpen, setMenuCatOpen] = useState(false);
   const env = process.env.REACT_APP_ALL_API;
 
   const token = JSON.parse(window.localStorage.getItem("token"));
@@ -225,10 +225,11 @@ export default function ProductOrder() {
               {languages[lang].main.sort}
             </strong>
             <div
-              onClick={() => setSortBtn(!sortBtn)}
-              className="w-homeSortWidth cursor-pointer mr-6 flex items-center justify-between bg-headerInpBg p-3 rounded-xl"
+              // onClick={() => setSortBtn(!sortBtn)}
+              onClick={() => setMenuCatOpen(!menuCatOpen)}
+              className="w-homeSortWidth relative cursor-pointer mr-6 flex items-center justify-between  bg-headerInpBg p-3 rounded-xl"
             >
-              <span className="font-medium text-sm text-homeSortWrap">
+              <span className="font-medium text-sm  text-homeSortWrap">
                 {languages[lang].main.as}
               </span>
               <svg
@@ -246,6 +247,26 @@ export default function ProductOrder() {
                   strokeLinejoin="round"
                 />
               </svg>
+              <ul
+                className={` ${
+                  menuCatOpen
+                    ? "h-auto border-b-2  duration-200"
+                    : "h-0  duration-200 overflow-hidden"
+                }  w-[150px]  absolute rounded-lg  mt-[90px]  bg-headerInpBg `}
+              >
+                <li>
+                  <span
+                    className="font-normal  text-homeSortWrap text-sm py-2 pl-3 inline-block duration-150 text-black-black_thin cursor-pointer"
+                    onClick={() => {
+                      setMenuCatOpen(false);
+                      // setClickMenu(false);
+                      setSortBtn(!sortBtn);
+                    }}
+                  >
+                    {sortBtn ? "By Default" : `${languages[lang].main.as}`}
+                  </span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>

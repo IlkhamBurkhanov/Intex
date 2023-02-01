@@ -7,6 +7,7 @@ import TBody from "../../components/TBody/TBody";
 import { searchProduction } from "../../redux/siteDataReducer";
 import { Link } from "react-router-dom";
 import MButton from "../../BaseComponents/MButton/MButton";
+import Open from "../../Assets/Images/TableImgs/open.svg";
 
 const env = process.env.REACT_APP_ALL_API;
 
@@ -21,6 +22,7 @@ const Products = () => {
   const [refresh, setRefresh] = React.useState(false);
   const [deleteAll, setDeleteAll] = React.useState([]);
   const [sortBtn, setSortBtn] = useState(false);
+  const [menuCatOpen, setMenuCatOpen] = useState(false);
   const languages = useSelector((state) => state.data.localization);
   const lang = useSelector((state) => state.data.lang);
 
@@ -256,11 +258,13 @@ const Products = () => {
             <strong className="font-semibold text-base text-homeColor mr-2.5">
               {languages[lang].main.sort}
             </strong>
+
             <div
-              onClick={() => setSortBtn(!sortBtn)}
-              className="w-homeSortWidth cursor-pointer mr-6 flex items-center justify-between bg-headerInpBg p-3 rounded-xl"
+              // onClick={() => setSortBtn(!sortBtn)}
+              onClick={() => setMenuCatOpen(!menuCatOpen)}
+              className="w-homeSortWidth relative cursor-pointer mr-6 flex items-center justify-between  bg-headerInpBg p-3 rounded-xl"
             >
-              <span className="font-medium text-sm text-homeSortWrap">
+              <span className="font-medium text-sm  text-homeSortWrap">
                 {languages[lang].main.as}
               </span>
               <svg
@@ -278,7 +282,28 @@ const Products = () => {
                   strokeLinejoin="round"
                 />
               </svg>
+              <ul
+                className={` ${
+                  menuCatOpen
+                    ? "h-auto border-b-2  duration-200"
+                    : "h-0  duration-200 overflow-hidden"
+                }  w-[150px]  absolute rounded-lg  mt-[90px]  bg-headerInpBg `}
+              >
+                <li>
+                  <span
+                    className="font-normal  text-homeSortWrap text-sm py-2 pl-3 inline-block duration-150 text-black-black_thin cursor-pointer"
+                    onClick={() => {
+                      setMenuCatOpen(false);
+                      // setClickMenu(false);
+                      setSortBtn(!sortBtn);
+                    }}
+                  >
+                    {sortBtn ? "By Default" : `${languages[lang].main.as}`}
+                  </span>
+                </li>
+              </ul>
             </div>
+
             <Link to={"/addProduct"} className="add bg-filterBg">
               {languages[lang].main.add}
             </Link>

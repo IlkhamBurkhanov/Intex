@@ -23,6 +23,7 @@ export default function Home() {
   const languages = useSelector((state) => state.data.localization);
   const lang = useSelector((state) => state.data.lang);
   const [sortBtn, setSortBtn] = useState(false);
+  const [menuCatOpen, setMenuCatOpen] = useState(false);
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
   const [totalPage, setTotalpage] = useState(0);
@@ -142,10 +143,11 @@ export default function Home() {
                 {languages[lang].main.sort}
               </strong>
               <div
-                onClick={() => setSortBtn(!sortBtn)}
-                className="w-homeSortWidth cursor-pointer mr-6 flex items-center justify-between bg-headerInpBg p-3 rounded-xl"
+                // onClick={() => setSortBtn(!sortBtn)}
+                onClick={() => setMenuCatOpen(!menuCatOpen)}
+                className="w-homeSortWidth relative cursor-pointer mr-6 flex items-center justify-between  bg-headerInpBg p-3 rounded-xl"
               >
-                <span className="font-medium text-sm text-homeSortWrap">
+                <span className="font-medium text-sm  text-homeSortWrap">
                   {languages[lang].main.as}
                 </span>
                 <svg
@@ -163,6 +165,26 @@ export default function Home() {
                     strokeLinejoin="round"
                   />
                 </svg>
+                <ul
+                  className={` ${
+                    menuCatOpen
+                      ? "h-auto border-b-2  duration-200"
+                      : "h-0  duration-200 overflow-hidden"
+                  }  w-[150px]  absolute rounded-lg  mt-[90px]  bg-headerInpBg `}
+                >
+                  <li>
+                    <span
+                      className="font-normal  text-homeSortWrap text-sm py-2 pl-3 inline-block duration-150 text-black-black_thin cursor-pointer"
+                      onClick={() => {
+                        setMenuCatOpen(false);
+                        // setClickMenu(false);
+                        setSortBtn(!sortBtn);
+                      }}
+                    >
+                      {sortBtn ? "By Default" : `${languages[lang].main.as}`}
+                    </span>
+                  </li>
+                </ul>
               </div>
               <Link
                 to="/addAtribut"

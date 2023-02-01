@@ -24,6 +24,7 @@ const ProductsCategory = () => {
   const [data, setData] = React.useState([]);
   const [sortBtn, setSortBtn] = useState(false);
   const [deleteAll, setDeleteAll] = React.useState([]);
+  const [menuCatOpen, setMenuCatOpen] = useState(false);
   const languages = useSelector((state) => state.data.localization);
   const lang = useSelector((state) => state.data.lang);
   const search = useSelector((state) => state.data.search);
@@ -194,10 +195,11 @@ const ProductsCategory = () => {
                 {languages[lang].main.sort}
               </strong>
               <div
-                onClick={() => setSortBtn(!sortBtn)}
-                className="w-homeSortWidth cursor-pointer mr-6 flex items-center justify-between bg-headerInpBg p-3 rounded-xl"
+                // onClick={() => setSortBtn(!sortBtn)}
+                onClick={() => setMenuCatOpen(!menuCatOpen)}
+                className="w-homeSortWidth relative cursor-pointer mr-6 flex items-center justify-between  bg-headerInpBg p-3 rounded-xl"
               >
-                <span className="font-medium text-sm text-homeSortWrap">
+                <span className="font-medium text-sm  text-homeSortWrap">
                   {languages[lang].main.as}
                 </span>
                 <svg
@@ -215,6 +217,26 @@ const ProductsCategory = () => {
                     strokeLinejoin="round"
                   />
                 </svg>
+                <ul
+                  className={` ${
+                    menuCatOpen
+                      ? "h-auto border-b-2  duration-200"
+                      : "h-0  duration-200 overflow-hidden"
+                  }  w-[150px]  absolute rounded-lg  mt-[90px]  bg-headerInpBg `}
+                >
+                  <li>
+                    <span
+                      className="font-normal  text-homeSortWrap text-sm py-2 pl-3 inline-block duration-150 text-black-black_thin cursor-pointer"
+                      onClick={() => {
+                        setMenuCatOpen(false);
+                        // setClickMenu(false);
+                        setSortBtn(!sortBtn);
+                      }}
+                    >
+                      {sortBtn ? "By Default" : `${languages[lang].main.as}`}
+                    </span>
+                  </li>
+                </ul>
               </div>
               <Link to={"/addCategory"} className="add bg-filterBg text-center">
                 {languages[lang].main.add}
