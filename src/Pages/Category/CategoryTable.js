@@ -185,9 +185,9 @@ const ProductsCategory = () => {
                 placeholder={languages[lang].main.searchProduct}
                 autoComplete="off"
                 value={search}
-                // onChange={(e) => {
-                //   dispatch(searchProduction(e.target.value));
-                // }}
+                onChange={(e) => {
+                  // dispatch(searchProduction(e.target.value));
+                }}
               />
             </div>
             <div className="flex items-center">

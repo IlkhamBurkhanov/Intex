@@ -214,9 +214,9 @@ export default function ProductOrder() {
               placeholder={languages[lang].main.searchOrder}
               autoComplete="off"
               value={search}
-              // onChange={(e) => {
-              //   dispatch(searchProduction(e.target.value));
-              // }}
+              onChange={(e) => {
+                // dispatch(searchProduction(e.target.value));
+              }}
             />
           </div>
           <div className="flex items-center">

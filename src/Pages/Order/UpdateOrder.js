@@ -120,6 +120,7 @@ export const UpdateOrder = () => {
                 </p>
                 <input
                   value={data[0]?.first_name}
+                  onChange={() => {}}
                   type="string"
                   name="orders"
                   id="orders"
@@ -136,6 +137,7 @@ export const UpdateOrder = () => {
                 </p>
                 <input
                   value={data[0]?.phone}
+                  onChange={() => {}}
                   type="string"
                   name="orders"
                   id="orders"
@@ -238,21 +240,7 @@ export const UpdateOrder = () => {
                 <p className="text-base font-[550] text-[#24283A] h-4 mb-3">
                   Статус
                 </p>
-                {/* <input
-                  defaultValue={data[0]?.order_status_ru}
-                  onChange={(e) =>
-                    setUpdateOrder({
-                      ...updateOrder,
-                      order_status: e.target.value,
-                    })
-                  }
-                  type="string"
-                  name="orders"
-                  id="orders"
-                  className="bg-white w-full outline-0 py-2 rounded-lg border border-solid  border-borderColor text-addProductColor p-4"
-                  minLength="3"
-                  maxLength="25"
-                /> */}
+
                 <select
                   value={status}
                   type="change"
@@ -282,6 +270,7 @@ export const UpdateOrder = () => {
                 </p>
                 <input
                   value={data[0]?.created_at.slice(0, 10)}
+                  onChange={() => {}}
                   type="string"
                   name="orders"
                   id="orders"
@@ -298,6 +287,7 @@ export const UpdateOrder = () => {
                 </p>
                 <input
                   value={data[0]?.total_price}
+                  onChange={() => {}}
                   type="string"
                   name="orders"
                   id="orders"
