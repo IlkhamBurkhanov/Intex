@@ -155,28 +155,6 @@ export default function AddProduct() {
     }
     console.log(imgUrl);
     console.log(getImg);
-    // imgUrl.map((item) => {
-    //   formdata.append("image", item.url);
-    // });
-    // imgUrl.map((item) => collectingImgs.push(item.url));
-    // console.log(collectingImgs);
-    // for (const item of collectingImgs) {
-    //   formdata.append("image", item);
-    //   console.log("formData", item);
-    // }
-    // axios
-    //   .post(`${env}media`, formdata, {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     if (res.status === 201) {
-    //       console.log("aliw", res);
-    //       setImage(res?.data.image);
-    //     }
-    //   })
-    //   .catch((err) => err);
 
     console.log(11111, imgUrl);
   };
@@ -356,7 +334,8 @@ export default function AddProduct() {
                       <div className="flex flex-col">
                         Count
                         <input
-                          defaultValue={count}
+                          required
+                          placeholder="120"
                           onChange={(e) => setCount(e.target.value)}
                           type="number"
                           className="h-12 w-[150px] flex mt-3 text-base rounded-lg p-2 sm:p-3 outline-none border border-gray-input_radius"
