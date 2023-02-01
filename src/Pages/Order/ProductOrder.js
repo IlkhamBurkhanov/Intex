@@ -195,7 +195,7 @@ export default function ProductOrder() {
       ],
     };
   });
-  console.log(data);
+
   return (
     <>
       <div className="mb-4">
