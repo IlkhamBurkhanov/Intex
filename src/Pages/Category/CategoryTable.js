@@ -95,11 +95,11 @@ const ProductsCategory = () => {
         }
       )
       .then((res) => {
-        console.log(res, IdArray);
+        console.log(res);
         setRefresh(!refresh);
       })
       .catch((err) => {
-        console.log(err, IdArray);
+        console.log(err);
       });
   };
 
@@ -125,7 +125,7 @@ const ProductsCategory = () => {
       style: "w-[474px]",
     },
   ];
-  console.log(data);
+
   let sortData = sortBtn
     ? data.sort((a, b) => {
         const nameA = a.category_ru.toUpperCase(); // ignore upper and lowercase
@@ -165,7 +165,7 @@ const ProductsCategory = () => {
       ],
     };
   });
-  console.log(data);
+
   return (
     <>
       <div className="pt-6  px-homeContentPadding ">

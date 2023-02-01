@@ -55,7 +55,7 @@ export default function Home() {
       })
       .catch((err) => console.error(err));
   }, [token]);
-  console.log(data);
+
   // --- Cоциальные сети get
   useEffect(() => {
     axios
@@ -259,21 +259,18 @@ export default function Home() {
   const handleChanges = () => {
     if (turn2 || turn3) {
       setTurn(checked ? turn : !turn);
-      console.log("Cliked");
-    } else console.log("don't work");
+    }
   };
   const handleChanges2 = () => {
     if (turn || turn3) {
       setTurn2(checked2 ? turn2 : !turn2);
-      console.log("Cliked2");
-    } else console.log("don't work2");
+    }
   };
 
   const handleChanges3 = () => {
     if (turn2 || turn) {
       setTurn3(checked3 ? turn3 : !turn3);
-      console.log("Cliked3");
-    } else console.log("don't work3");
+    }
   };
 
   // DEFAULT LANGUAGENI UZGARTIRADIGAN FUNCTIONS

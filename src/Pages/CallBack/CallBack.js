@@ -43,7 +43,7 @@ export default function Home() {
         // setLoader(false);
       });
   }, [token]);
-  console.log(products);
+
   let sortData = sortBtn
     ? products.sort((a, b) => {
         const nameA = a.name.toUpperCase(); // ignore upper and lowercase

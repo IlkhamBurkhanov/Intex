@@ -84,7 +84,6 @@ export default function AddProduct() {
         }
       )
       .then(() => {
-        console.log("Submitted");
         navigate("/");
       })
       .catch(() => {
@@ -126,7 +125,6 @@ export default function AddProduct() {
       })
       .then((res) => {
         if (res.status === 201) {
-          console.log("aliw", res);
           setImage(res?.data.image);
         }
       })
@@ -134,8 +132,6 @@ export default function AddProduct() {
   }, [imgUrl]);
 
   const findNewImg = (evt) => {
-    console.log("sss");
-    console.log(evt.target.files[0]);
     setGetImg([
       ...getImg,
       {
@@ -144,7 +140,6 @@ export default function AddProduct() {
       },
     ]);
     if (evt.target && evt.target.files[0]) {
-      console.log(evt.target);
       setImgUrl([
         ...imgUrl,
         {
@@ -153,10 +148,6 @@ export default function AddProduct() {
         },
       ]);
     }
-    console.log(imgUrl);
-    console.log(getImg);
-
-    console.log(11111, imgUrl);
   };
 
   const handleSubmitSelect = (evt) => {
@@ -193,7 +184,7 @@ export default function AddProduct() {
       })
       .catch((err) => console.error(err));
   }, []);
-  console.log(imgUrl);
+
   return (
     <>
       <div className="bg-white flex items-center w-full pt-1.5 pb-1.5 px-8">

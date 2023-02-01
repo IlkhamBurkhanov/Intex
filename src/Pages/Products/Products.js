@@ -110,7 +110,7 @@ const Products = () => {
   );
   const IdArray = data?.map((res) => res.id);
   // (IdArray);
-  console.log(IdArray);
+  // console.log(IdArray);
   const DeleteAll = (e) => {
     axios
       .delete(
@@ -151,7 +151,6 @@ const Products = () => {
     : null;
 
   const vitalData = data.map((item) => {
-    console.log(item);
     return {
       mainId: item.id,
       data: [

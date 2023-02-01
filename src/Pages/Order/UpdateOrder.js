@@ -19,8 +19,6 @@ export const UpdateOrder = () => {
   const [status, setStatus] = useState(data[0]?.order_status_ru);
   // const UserID = JSON.parse(window.localStorage.getItem("UserId"));
   // const OrderNum = JSON.parse(window.localStorage.getItem("OrderNumber"));
-  console.log(orderNumber);
-  console.log(userId);
 
   //intex-shop-production.up.railway.app/api/orders/50?order_number=%23100053
   React.useEffect(() => {
@@ -189,7 +187,12 @@ export const UpdateOrder = () => {
                   <div className="w-[840px] my-[12px]">
                     <div className="relative">
                       <input
-                        defaultValue={item?.product_name_ru}
+                        readOnly
+                        defaultValue={
+                          item?.product_name_ru
+                            ? item?.product_name_ru
+                            : "Нет названия продукта"
+                        }
                         // onChange={(e) =>
                         //   setUpdateOrder({
                         //     ...updateOrder,

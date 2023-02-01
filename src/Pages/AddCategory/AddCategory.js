@@ -89,7 +89,6 @@ export default function AddCategory() {
       })
       .then((res) => {
         if (res.status === 201) {
-          console.log(res);
           navigate("/category");
         }
       })

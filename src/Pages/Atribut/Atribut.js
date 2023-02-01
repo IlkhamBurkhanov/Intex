@@ -63,7 +63,7 @@ export default function Home() {
       .catch((err) => console.error(err))
       .finally(() => {});
   }, [sortBtn]);
-  console.log(atr);
+
   let sortData = sortBtn
     ? atr.sort((a, b) => {
         const nameA = a.attribute_en.toUpperCase(); // ignore upper and lowercase
@@ -102,7 +102,7 @@ export default function Home() {
       ],
     };
   });
-  console.log(vitalData);
+
   return (
     <div>
       <div className="bg-white flex items-center w-full pt-1.5 pb-1.5 px-8">

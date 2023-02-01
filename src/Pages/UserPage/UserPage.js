@@ -239,7 +239,6 @@ function UserPage() {
   };
 
   const onSubmit = (values, { resetForm }) => {
-    console.log(values);
     const userDeteals = {
       first_name: values.name,
       last_name: values.surname,
@@ -311,17 +310,14 @@ function UserPage() {
   const errorDate = newdate.getTime() - 441796964000;
 
   const handleBirthday = (e) => {
-    console.log(newdate.getTime());
-
     const aliw = new Date(e.target.value);
 
     if (aliw.getTime() < errorDate) {
       setBirthday(e.target.value);
-      console.log("success");
+
       setDateError(false);
     } else {
       setDateError(true);
-      console.log("error date");
     }
   };
   return (
@@ -649,7 +645,6 @@ function UserPage() {
                     required
                     type="number"
                     placeholder="901234567"
-                    onChange={(e) => console.log(e.target.value)}
                     className="font-normal outline-none w-full ml-1 h-full p-2"
                     {...formik.getFieldProps("phone_num")}
                   />

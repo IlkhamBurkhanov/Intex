@@ -89,7 +89,7 @@ export default function ProductOrder() {
       });
   };
   // ("with id", deleteAll);
-  console.log(IdArray);
+
   // (deleteAll.length);
   const datas = [
     {
@@ -148,8 +148,7 @@ export default function ProductOrder() {
         return 0;
       })
     : null;
-  console.log(data);
-  console.log(sortData);
+
   const vitalData = data.map((item) => {
     // console.log(item.created_at[0].slice(0, 10));
     return {
