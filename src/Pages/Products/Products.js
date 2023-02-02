@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Trash from "../../Assets/Images/ProductsImgs/trash.svg";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import THead from "../../components/THead/THead";
 import TBody from "../../components/TBody/TBody";
 import { searchProduction } from "../../redux/siteDataReducer";
@@ -23,9 +23,11 @@ const Products = () => {
   const [deleteAll, setDeleteAll] = React.useState([]);
   const [sortBtn, setSortBtn] = useState(false);
   const [menuCatOpen, setMenuCatOpen] = useState(false);
+  const [search, setSearch] = useState("");
   const languages = useSelector((state) => state.data.localization);
   const lang = useSelector((state) => state.data.lang);
 
+  const dispatch = useDispatch();
   const token = JSON.parse(window.localStorage.getItem("token"));
 
   const datajon = [
@@ -150,89 +152,64 @@ const Products = () => {
       })
     : null;
 
-  const vitalData = data.map((item) => {
-    return {
-      mainId: item.id,
-      data: [
-        {
-          title: item.id,
-          style: "w-14 flex justify-center",
-          id: item.id,
-        },
-        {
-          title: item.name_en,
-          image: item.image[0],
-          style: "w-[300px] flex pl-3 items-center",
-        },
-        {
-          title: item.price,
-          style: "w-[140px]",
-        },
-        {
-          title: item.discount_price,
-          style: "w-[140px]",
-        },
-        {
-          title: item.count,
-          style: "w-[97px]",
-        },
-        {
-          title: item.category_ru ? item.category_ru : "Каркасные",
-          style: "w-[150px]",
-        },
-        {
-          title: item.status_en ? item.status_en : "new",
-          style: "w-[130px]",
-          label: `label label_${item.status_en}`,
-          statusStyle: "",
-        },
-      ],
-    };
-  });
-  // : sortData.map((item) => {
-  //     console.log(item);
-  //     return {
-  //       mainId: item.id,
-  //       data: [
-  //         {
-  //           title: item.id,
-  //           style: "w-14 flex justify-center",
-  //           id: item.id,
-  //         },
-  //         {
-  //           title: item.name_en,
-  //           image: item.image[0],
-  //           style: "w-[300px] flex pl-3 items-center",
-  //         },
-  //         {
-  //           title: item.price,
-  //           style: "w-[140px]",
-  //         },
-  //         {
-  //           title: item.discount_price,
-  //           style: "w-[140px]",
-  //         },
-  //         {
-  //           title: item.count,
-  //           style: "w-[97px]",
-  //         },
-  //         {
-  //           title: item.category_ru ? item.category_ru : "Каркасные",
-  //           style: "w-[150px]",
-  //         },
-  //         {
-  //           title: item.status_en ? item.status_en : "new",
-  //           style: "w-[130px]",
-  //           label: `label label_${item.status_en}`,
-  //           statusStyle: "",
-  //         },
-  //       ],
-  //     };
-  //   });
+  const vitalData = data
+    .filter((item) => {
+      return search.toLowerCase() === ""
+        ? item
+        : item.name_en.toLowerCase().includes(search.toLowerCase());
+    })
+    .map((item) => {
+      return {
+        mainId: item.id,
+        data: [
+          {
+            title: item.id,
+            style: "w-14 flex justify-center",
+            id: item.id,
+          },
+          {
+            title: item.name_en,
+            image: item.image[0],
+            style: "w-[300px] flex pl-3 items-center",
+          },
+          {
+            title: item.price,
+            style: "w-[140px]",
+          },
+          {
+            title: item.discount_price,
+            style: "w-[140px]",
+          },
+          {
+            title: item.count,
+            style: "w-[97px]",
+          },
+          {
+            title: item.category_ru ? item.category_ru : "Каркасные",
+            style: "w-[150px]",
+          },
+          {
+            title: item.status_en ? item.status_en : "new",
+            style: "w-[130px]",
+            label: `label label_${item.status_en}`,
+            statusStyle: "",
+          },
+        ],
+      };
+    });
+  console.log(vitalData);
 
   const handleScroll = () => {
     console.log("scrolling");
   };
+  function searchProduct(inputValue, data) {
+    let regex = new RegExp(inputValue, "gi");
+    const filterInput = data.filter((product) =>
+      product[`name_${lang}`]?.match(regex)
+    );
+
+    return console.log(filterInput);
+  }
 
   return (
     <div>
@@ -251,6 +228,10 @@ const Products = () => {
               type="text"
               placeholder={languages[lang].main.searchProduct}
               autoComplete="off"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
             />
           </div>
           <div className="flex items-center">

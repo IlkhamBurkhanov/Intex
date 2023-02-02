@@ -27,7 +27,7 @@ const ProductsCategory = () => {
   const [menuCatOpen, setMenuCatOpen] = useState(false);
   const languages = useSelector((state) => state.data.localization);
   const lang = useSelector((state) => state.data.lang);
-  const search = useSelector((state) => state.data.search);
+  const [search, setSearch] = useState("");
 
   function searchProduct(inputValue, data) {
     let regex = new RegExp(inputValue, "gi");
@@ -141,30 +141,36 @@ const ProductsCategory = () => {
         return 0;
       })
     : null;
-  const vitalData = data.map((item) => {
-    return {
-      mainId: item.id,
+  const vitalData = data
+    .filter((item) => {
+      return search.toLowerCase() === ""
+        ? item
+        : item.category_ru.toLowerCase().includes(search.toLowerCase());
+    })
+    .map((item) => {
+      return {
+        mainId: item.id,
 
-      data: [
-        {
-          title: item.id,
-          style: "w-20 ",
-        },
-        {
-          title: item.category_ru,
-          style: "w-[227px] flex pl-3 items-center",
-        },
-        {
-          title: item.ru[0] == null ? "0" : item.ru.length,
-          style: "w-[197px]",
-        },
-        {
-          title: item.ru[0] === null ? "alisher" : item.ru,
-          style: "w-[474px]",
-        },
-      ],
-    };
-  });
+        data: [
+          {
+            title: item.id,
+            style: "w-20 ",
+          },
+          {
+            title: item.category_ru,
+            style: "w-[227px] flex pl-3 items-center",
+          },
+          {
+            title: item.ru[0] == null ? "0" : item.ru.length,
+            style: "w-[197px]",
+          },
+          {
+            title: item.ru[0] === null ? "alisher" : item.ru,
+            style: "w-[474px]",
+          },
+        ],
+      };
+    });
 
   return (
     <>
@@ -186,7 +192,7 @@ const ProductsCategory = () => {
                 autoComplete="off"
                 value={search}
                 onChange={(e) => {
-                  // dispatch(searchProduction(e.target.value));
+                  setSearch(e.target.value);
                 }}
               />
             </div>

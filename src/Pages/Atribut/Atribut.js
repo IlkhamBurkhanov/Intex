@@ -16,7 +16,6 @@ import axios from "axios";
 import Trash from "../../Assets/Images/ProductsImgs/trash.svg";
 
 export default function Home() {
-  const search = useSelector((state) => state.data.search);
   const [atr, setAtr] = React.useState([]);
   const [isChecked, setIsChecked] = React.useState(false);
   const [deleteAll, setDeleteAll] = React.useState([]);
@@ -26,6 +25,7 @@ export default function Home() {
   const [menuCatOpen, setMenuCatOpen] = useState(false);
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
+  const [search, setSearch] = useState("");
   const [totalPage, setTotalpage] = useState(0);
   const data = [
     {
@@ -79,29 +79,35 @@ export default function Home() {
         return 0;
       })
     : null;
-  const vitalData = atr.map((item) => {
-    return {
-      mainId: item.id,
-      data: [
-        {
-          title: item?.id,
-          style: "w-[80px] flex justify-center",
-        },
-        {
-          title: item?.attribute_en,
-          style: "w-[300px] flex pl-3 items-center",
-        },
-        {
-          title: item?.view,
-          style: "w-[190px] flex pl-3 items-center",
-        },
-        {
-          title: item.en[0] ? item.en : "-",
-          style: "w-[480px] flex pl-3 items-center",
-        },
-      ],
-    };
-  });
+  const vitalData = atr
+    .filter((item) => {
+      return search.toLowerCase() === ""
+        ? item
+        : item.attribute_en.toLowerCase().includes(search.toLowerCase());
+    })
+    .map((item) => {
+      return {
+        mainId: item.id,
+        data: [
+          {
+            title: item?.id,
+            style: "w-[80px] flex justify-center",
+          },
+          {
+            title: item?.attribute_en,
+            style: "w-[300px] flex pl-3 items-center",
+          },
+          {
+            title: item?.view,
+            style: "w-[190px] flex pl-3 items-center",
+          },
+          {
+            title: item.en[0] ? item.en : "-",
+            style: "w-[480px] flex pl-3 items-center",
+          },
+        ],
+      };
+    });
 
   return (
     <div>
@@ -134,7 +140,7 @@ export default function Home() {
                 autoComplete="off"
                 value={search}
                 onChange={(e) => {
-                  // dispatch(searchProduction(e.target.value))
+                  setSearch(e.target.value);
                 }}
               />
             </div>

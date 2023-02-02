@@ -40,6 +40,7 @@ function UserPage() {
   const [sortBtn, setSortBtn] = useState(false);
   const [menuCatOpen, setMenuCatOpen] = useState(false);
   const [dateError, setDateError] = useState(false);
+  const [search, setSearch] = useState("");
 
   // ------> Data
   const [products, setProducts] = useState([]);
@@ -123,47 +124,53 @@ function UserPage() {
     : null;
 
   // ------> Table Row Information
-  const vitalData = products?.map((item) => {
-    return {
-      mainId: item.id,
-      data: [
-        {
-          title: item?.id,
-          style: "w-[65px]",
-        },
-        {
-          title: item?.first_name + " " + item?.last_name,
-          image: item.user_image,
-          style: "w-[248px] flex pl-3",
-        },
-        {
-          title: item?.role ? item.role : "-",
-          style: "w-[170px] pl-3",
-        },
-        {
-          title: item?.status,
-          style: "w-[140px] pl-3",
-          textClass: `${
-            item?.status
-              ? "py-[5px] px-[10px] bg-[#0BCC23] rounded-[4px] text-xs "
-              : ""
-          } `,
-        },
-        {
-          title: item?.created_at.slice(0, 10),
-          style: "w-[188px] pl-3",
-        },
-        {
-          title: item?.phone,
-          style: "w-[162px]",
-        },
-        {
-          title: item?.birth_date ? item.birth_date : "-",
-          style: "w-[100px]",
-        },
-      ],
-    };
-  });
+  const vitalData = products
+    ?.filter((item) => {
+      return search.toLowerCase() === ""
+        ? item
+        : item.first_name.toLowerCase().includes(search.toLowerCase());
+    })
+    .map((item) => {
+      return {
+        mainId: item.id,
+        data: [
+          {
+            title: item?.id,
+            style: "w-[65px]",
+          },
+          {
+            title: item?.first_name + " " + item?.last_name,
+            image: item.user_image,
+            style: "w-[248px] flex pl-3",
+          },
+          {
+            title: item?.role ? item.role : "-",
+            style: "w-[170px] pl-3",
+          },
+          {
+            title: item?.status,
+            style: "w-[140px] pl-3",
+            textClass: `${
+              item?.status
+                ? "py-[5px] px-[10px] bg-[#0BCC23] rounded-[4px] text-xs "
+                : ""
+            } `,
+          },
+          {
+            title: item?.created_at.slice(0, 10),
+            style: "w-[188px] pl-3",
+          },
+          {
+            title: item?.phone,
+            style: "w-[162px]",
+          },
+          {
+            title: item?.birth_date ? item.birth_date : "-",
+            style: "w-[100px]",
+          },
+        ],
+      };
+    });
 
   // ------> Upload Img
   const uploadImg = (evt) => {
@@ -353,6 +360,7 @@ function UserPage() {
                   type="text"
                   placeholder={languages[lang].main.searchProduct}
                   autoComplete="off"
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
               <div className="flex items-center">

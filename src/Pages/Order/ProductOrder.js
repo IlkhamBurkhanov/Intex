@@ -4,10 +4,11 @@ import TableHeader from "../../components/TableHeader/TableHeader";
 import Trash from "../../Assets/Images/ProductsImgs/trash.svg";
 import TableRow2 from "../../components/TableRow/orderTable";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import THead from "../../components/THead/THead";
 import TBody from "../../components/TBody/TBody";
 import MButton from "../../BaseComponents/MButton/MButton";
+import { searchProduction } from "../../redux/siteDataReducer";
 import { useState } from "react";
 
 export default function ProductOrder() {
@@ -21,13 +22,14 @@ export default function ProductOrder() {
   const [refresh, setRefresh] = React.useState(false);
   const [deleteAll, setDeleteAll] = React.useState([]);
   const [menuCatOpen, setMenuCatOpen] = useState(false);
+  const [search, setSearch] = useState("");
   const env = process.env.REACT_APP_ALL_API;
+
+  const dispatch = useDispatch();
 
   const token = JSON.parse(window.localStorage.getItem("token"));
   const languages = useSelector((state) => state.data.localization);
   const lang = useSelector((state) => state.data.lang);
-
-  const search = useSelector((state) => state.data.search);
 
   function searchProduct(inputValue, data) {
     let regex = new RegExp(inputValue, "gi");
@@ -35,7 +37,7 @@ export default function ProductOrder() {
       product[`name_${lang}`]?.match(regex)
     );
 
-    return filterInput;
+    return console.log(filterInput);
   }
 
   const handleChange = (evt) => {
@@ -149,52 +151,58 @@ export default function ProductOrder() {
       })
     : null;
 
-  const vitalData = data.map((item) => {
-    // console.log(item.created_at[0].slice(0, 10));
-    return {
-      mainId: item.ids,
-      order_num: item.order_number,
-      user_id: item?.user_id,
-      data: [
-        {
-          title: item.order_number,
-          style: "w-[120px] ",
-          id: item.order_number,
-          user_id: item?.user_id,
-        },
-        {
-          title: item.first_name,
-          style: "w-[132px]",
-        },
-        {
-          title: item.phone,
-          style: "w-[162px]",
-        },
-        {
-          title: item.address,
-          style: "w-[200px] underline underline-offset-4 text-blue-400",
-        },
-        {
-          title: item.total_count,
-          style: "w-[110px] pl-3",
-        },
-        {
-          title: `${item.total_price} сум`,
-          style: "w-[132px]",
-        },
-        {
-          title: `${item.created_at[0].slice(0, 10)}`,
-          style: "w-[114px]",
-        },
-        {
-          title: item.name_ru ? item.name_ru : "нот статус",
-          style: "w-[118px] flex justify-center",
-          label: `label label_${item.name_en}`,
-          statusStyle: "",
-        },
-      ],
-    };
-  });
+  const vitalData = data
+    .filter((item) => {
+      return search.toLowerCase() === ""
+        ? item
+        : item.first_name.toLowerCase().includes(search.toLowerCase());
+    })
+    .map((item) => {
+      // console.log(item.created_at[0].slice(0, 10));
+      return {
+        mainId: item.ids,
+        order_num: item.order_number,
+        user_id: item?.user_id,
+        data: [
+          {
+            title: item.order_number,
+            style: "w-[120px] ",
+            id: item.order_number,
+            user_id: item?.user_id,
+          },
+          {
+            title: item.first_name,
+            style: "w-[132px]",
+          },
+          {
+            title: item.phone,
+            style: "w-[162px]",
+          },
+          {
+            title: item.address,
+            style: "w-[200px] underline underline-offset-4 text-blue-400",
+          },
+          {
+            title: item.total_count,
+            style: "w-[110px] pl-3",
+          },
+          {
+            title: `${item.total_price} сум`,
+            style: "w-[132px]",
+          },
+          {
+            title: `${item.created_at[0].slice(0, 10)}`,
+            style: "w-[114px]",
+          },
+          {
+            title: item.name_ru ? item.name_ru : "нот статус",
+            style: "w-[118px] flex justify-center",
+            label: `label label_${item.name_en}`,
+            statusStyle: "",
+          },
+        ],
+      };
+    });
 
   return (
     <>
@@ -215,7 +223,7 @@ export default function ProductOrder() {
               autoComplete="off"
               value={search}
               onChange={(e) => {
-                // dispatch(searchProduction(e.target.value));
+                setSearch(e.target.value);
               }}
             />
           </div>

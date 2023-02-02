@@ -19,6 +19,7 @@ export default function Home() {
   const [totalPage, setTotalpage] = useState(0);
   const [sortBtn, setSortBtn] = useState(false);
   const [menuCatOpen, setMenuCatOpen] = useState(false);
+  const [search, setSearch] = useState("");
   const languages = useSelector((state) => state.data.localization);
   const lang = useSelector((state) => state.data.lang);
   // const [loader, setLoader] = useState([]);
@@ -60,30 +61,36 @@ export default function Home() {
       })
     : null;
   // ------> Table Row Information
-  const vitalData = products.map((item) => {
-    return {
-      mainId: item.id,
-      data: [
-        {
-          title: item.id,
-          style: "w-20",
-        },
-        {
-          title: item.name,
+  const vitalData = products
+    .filter((item) => {
+      return search.toLowerCase() === ""
+        ? item
+        : item.name.toLowerCase().includes(search.toLowerCase());
+    })
+    .map((item) => {
+      return {
+        mainId: item.id,
+        data: [
+          {
+            title: item.id,
+            style: "w-20",
+          },
+          {
+            title: item.name,
 
-          style: "w-[393px] flex pl-3",
-        },
-        {
-          title: item.phone,
-          style: "w-[249px] pl-3",
-        },
-        {
-          title: item.created_at.slice(0, 10),
-          style: "w-[258px] pl-3",
-        },
-      ],
-    };
-  });
+            style: "w-[393px] flex pl-3",
+          },
+          {
+            title: item.phone,
+            style: "w-[249px] pl-3",
+          },
+          {
+            title: item.created_at.slice(0, 10),
+            style: "w-[258px] pl-3",
+          },
+        ],
+      };
+    });
   const data = [
     {
       title: languages[lang].main.id ? languages[lang].main.id : "ID",
@@ -136,6 +143,7 @@ export default function Home() {
                 className="py-3 ml-4 w-homeInpWidth outline-none pl-9 pr-3 rounded-xl bg-headerInpBg"
                 type="text"
                 placeholder={languages[lang].main.searchProduct}
+                onChange={(e) => setSearch(e.target.value)}
                 autoComplete="off"
               />
             </div>
