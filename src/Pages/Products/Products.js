@@ -86,8 +86,9 @@ const Products = () => {
       .then((res) => {
         setData(res?.data?.result);
         // (res?.data?.result);
-        setTotalpage(res.data?.total_count.count);
+        setTotalpage(res.data?.pageInfo.total_count);
         setLoader(false);
+        console.log(res?.data);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [limit, page, refresh, sortBtn]);
@@ -168,7 +169,7 @@ const Products = () => {
             id: item.id,
           },
           {
-            title: item.name_en,
+            title: item.name_ru,
             image: item.image[0],
             style: "w-[300px] flex pl-3 items-center",
           },

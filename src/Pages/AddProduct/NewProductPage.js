@@ -61,21 +61,21 @@ export default function AddProduct() {
       .post(
         "https://intex-shop-production.up.railway.app/api/products",
         {
-          name_uz: addProduct.name_uz,
-          name_ru: addProduct.name_ru,
-          name_en: addProduct.name_en,
+          name_uz: addProduct.name_uz ? addProduct.name_uz : " ",
+          name_ru: addProduct.name_ru ? addProduct.name_ru : " ",
+          name_en: addProduct.name_en ? addProduct.name_en : " ",
           discount_price: values.ru_salePrice,
           price: values.ru_price,
           count: count,
-          about_uz: addProduct.name_uz,
-          about_ru: addProduct.about_ru,
-          about_en: addProduct.about_en,
+          about_uz: addProduct.name_uz ? addProduct.name_uz : " ",
+          about_ru: addProduct.about_ru ? addProduct.name_ru : " ",
+          about_en: addProduct.about_en ? addProduct.name_en : " ",
           image: image ? image : [""],
           category_id: categoryItem,
           country_id: 1,
           status_id: statusItem,
-          manufacturer_id: 0,
-          attribute_id: [0],
+          manufacturer_id: 1,
+          attribute_id: [1],
         },
         {
           headers: {
@@ -83,13 +83,14 @@ export default function AddProduct() {
           },
         }
       )
-      .then(() => {
+      .then((res) => {
         navigate("/");
+        console.log(res);
       })
       .catch(() => {
         console.log("Internal error");
       });
-
+    console.log(addProduct);
     const informationResult = {
       name_uz: values.uzName,
     };
@@ -171,7 +172,7 @@ export default function AddProduct() {
       .catch((err) => console.error(err));
     axios
       .get(
-        "https://intex-shop-production.up.railway.app/api/categories/getAll?page=0&limit=10"
+        "https://intex-shop-production.up.railway.app/api/categories?current_page=0"
       )
       .then((res) => {
         setCategory(res.data.result);
@@ -184,6 +185,8 @@ export default function AddProduct() {
       })
       .catch((err) => console.error(err));
   }, []);
+  console.log(category);
+  console.log(langData);
 
   return (
     <>
